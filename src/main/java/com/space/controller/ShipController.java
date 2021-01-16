@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @ResponseBody
 @RequestMapping("/rest/ships")
 public class ShipController {
@@ -39,8 +39,7 @@ public class ShipController {
                                   @RequestParam(required = false) Integer pageSize){
 
         List<Ship> shipList = shipService.getAllShipsByFilter(name, planet, shipType, after, before,
-                isUsed, minSpeed, maxSpeed, minCrewSize, maxCrewSize, minRating,
-                maxRating, order, pageNumber, pageSize);
+                isUsed, minSpeed, maxSpeed, minCrewSize, maxCrewSize, minRating, maxRating);
 
         return shipService.getShipListByOrderByPage(shipList, order, pageNumber, pageSize);
     }
@@ -61,11 +60,13 @@ public class ShipController {
                          @RequestParam(required = false) ShipOrder order,
                          @RequestParam(required = false) Integer pageNumber,
                          @RequestParam(required = false) Integer pageSize){
-        return shipService.getAllShipsByFilter(name, planet, shipType, after, before,
-                isUsed, minSpeed, maxSpeed, minCrewSize, maxCrewSize, minRating,
-                maxRating, order, pageNumber, pageSize).size();
+
+        return shipService.getShipCount(name, planet, shipType, after, before,
+                isUsed, minSpeed, maxSpeed, minCrewSize, maxCrewSize, minRating, maxRating);
 
     }
+
+
 
     @GetMapping("/{id}")
     public Ship getShipById(@PathVariable(name = "id") String id) {

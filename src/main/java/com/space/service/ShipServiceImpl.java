@@ -31,7 +31,7 @@ public class ShipServiceImpl implements ShipService {
     public List<Ship> getAllShipsByFilter(String name, String planet, ShipType shipType, Long after,
                                           Long before, Boolean isUsed, Double minSpeed, Double maxSpeed,
                                           Integer minCrewSize, Integer maxCrewSize, Double minRating,
-                                          Double maxRating, ShipOrder order, Integer pageNumber, Integer pageSize) {
+                                          Double maxRating) {
 
         List<Ship> shipList = getAllShips();
 
@@ -172,7 +172,9 @@ public class ShipServiceImpl implements ShipService {
     public Integer getShipCount(String name, String planet, ShipType shipType, Long after, Long before,
                                 Boolean isUsed, Double minSpeed, Double maxSpeed,
                                 Integer minCrewSize, Integer maxCrewSize, Double minRaring, Double maxRating) {
-        return null;
+
+        return getAllShipsByFilter(name, planet, shipType, after, before, isUsed, minSpeed, maxSpeed,
+                minCrewSize, maxCrewSize, minRaring,maxRating).size();
     }
 
     @Override
