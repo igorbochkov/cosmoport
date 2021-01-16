@@ -84,8 +84,8 @@ public class Ship {
         return isUsed;
     }
 
-    public void setUsed(Boolean used) {
-        isUsed = used;
+    public void setUsed(Boolean isUsed) {
+        this.isUsed = isUsed;
     }
 
     public Double getSpeed() {

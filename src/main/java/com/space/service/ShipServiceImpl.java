@@ -125,7 +125,16 @@ public class ShipServiceImpl implements ShipService {
 
     @Override
     public Ship createNewShip(Ship ship) {
-        return null;
+
+        if (!checkValidParams(ship)) throw new BadRequestException();
+
+        if(ship.isUsed()==null) ship.setUsed(false);
+
+        Double speed =  Math.round(ship.getSpeed() * 100) * 1.0 /100;
+
+        ship.setRating(getRating(speed, ship.isUsed(), ship.getProdDate()));
+
+        return shipRepository.save(ship);
     }
 
     @Override

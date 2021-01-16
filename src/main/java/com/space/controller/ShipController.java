@@ -36,7 +36,7 @@ public class ShipController {
                                   @RequestParam(required = false) Double maxRating,
                                   @RequestParam(required = false) ShipOrder order,
                                   @RequestParam(required = false) Integer pageNumber,
-                                  @RequestParam(required = false) Integer pageSize){
+                                  @RequestParam(required = false) Integer pageSize) {
 
         List<Ship> shipList = shipService.getAllShipsByFilter(name, planet, shipType, after, before,
                 isUsed, minSpeed, maxSpeed, minCrewSize, maxCrewSize, minRating, maxRating);
@@ -59,7 +59,7 @@ public class ShipController {
                          @RequestParam(required = false) Double maxRating,
                          @RequestParam(required = false) ShipOrder order,
                          @RequestParam(required = false) Integer pageNumber,
-                         @RequestParam(required = false) Integer pageSize){
+                         @RequestParam(required = false) Integer pageSize) {
 
         return shipService.getShipCount(name, planet, shipType, after, before,
                 isUsed, minSpeed, maxSpeed, minCrewSize, maxCrewSize, minRating, maxRating);
@@ -67,6 +67,10 @@ public class ShipController {
     }
 
 
+    @PostMapping
+    public Ship createNewShip(@RequestBody Ship ship) {
+        return shipService.createNewShip(ship);
+    }
 
     @GetMapping("/{id}")
     public Ship getShipById(@PathVariable(name = "id") String id) {
