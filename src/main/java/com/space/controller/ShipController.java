@@ -22,26 +22,49 @@ public class ShipController {
     }
 
     @GetMapping
-    public List<Ship> getAllShips(@RequestParam(name = "name", required = false) String name,
-                                  @RequestParam(name = "planet", required = false) String planet,
-                                  @RequestParam(name = "shipType", required = false) ShipType shipType,
-                                  @RequestParam(name = "after", required = false) Long after,
-                                  @RequestParam(name = "before", required = false) Long before,
-                                  @RequestParam(name = "isUsed", required = false) Boolean isUsed,
-                                  @RequestParam(name = "minSpeed", required = false) Double minSpeed,
-                                  @RequestParam(name = "maxSpeed", required = false) Double maxSpeed,
-                                  @RequestParam(name = "minCrewSize", required = false) Integer minCrewSize,
-                                  @RequestParam(name = "maxCrewSize", required = false) Integer maxCrewSize,
-                                  @RequestParam(name = "minRating", required = false) Double minRating,
-                                  @RequestParam(name = "maxRating", required = false) Double maxRating,
-                                  @RequestParam(name = "order", required = false) ShipOrder order,
-                                  @RequestParam(name = "pageNumber", required = false) Integer pageNumber,
-                                  @RequestParam(name = "pageSize", required = false) Integer pageSize) {
+    public List<Ship> getAllShips(@RequestParam(required = false) String name,
+                                  @RequestParam(required = false) String planet,
+                                  @RequestParam(required = false) ShipType shipType,
+                                  @RequestParam(required = false) Long after,
+                                  @RequestParam(required = false) Long before,
+                                  @RequestParam(required = false) Boolean isUsed,
+                                  @RequestParam(required = false) Double minSpeed,
+                                  @RequestParam(required = false) Double maxSpeed,
+                                  @RequestParam(required = false) Integer minCrewSize,
+                                  @RequestParam(required = false) Integer maxCrewSize,
+                                  @RequestParam(required = false) Double minRating,
+                                  @RequestParam(required = false) Double maxRating,
+                                  @RequestParam(required = false) ShipOrder order,
+                                  @RequestParam(required = false) Integer pageNumber,
+                                  @RequestParam(required = false) Integer pageSize){
 
-        List<Ship> allShips = shipService.getAllShipsByFilter(name, planet, shipType, after, before, isUsed, minSpeed, maxSpeed,
-                minCrewSize, maxCrewSize, minRating,maxRating);
+        List<Ship> shipList = shipService.getAllShipsByFilter(name, planet, shipType, after, before,
+                isUsed, minSpeed, maxSpeed, minCrewSize, maxCrewSize, minRating,
+                maxRating, order, pageNumber, pageSize);
 
-        return shipService.getShipListByOrderByPage(allShips,order, pageNumber, pageSize);
+        return shipService.getShipListByOrderByPage(shipList, order, pageNumber, pageSize);
+    }
+
+    @GetMapping("/count")
+    public int shipCount(@RequestParam(required = false) String name,
+                         @RequestParam(required = false) String planet,
+                         @RequestParam(required = false) ShipType shipType,
+                         @RequestParam(required = false) Long after,
+                         @RequestParam(required = false) Long before,
+                         @RequestParam(required = false) Boolean isUsed,
+                         @RequestParam(required = false) Double minSpeed,
+                         @RequestParam(required = false) Double maxSpeed,
+                         @RequestParam(required = false) Integer minCrewSize,
+                         @RequestParam(required = false) Integer maxCrewSize,
+                         @RequestParam(required = false) Double minRating,
+                         @RequestParam(required = false) Double maxRating,
+                         @RequestParam(required = false) ShipOrder order,
+                         @RequestParam(required = false) Integer pageNumber,
+                         @RequestParam(required = false) Integer pageSize){
+        return shipService.getAllShipsByFilter(name, planet, shipType, after, before,
+                isUsed, minSpeed, maxSpeed, minCrewSize, maxCrewSize, minRating,
+                maxRating, order, pageNumber, pageSize).size();
+
     }
 
     @GetMapping("/{id}")

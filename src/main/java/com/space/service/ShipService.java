@@ -14,7 +14,7 @@ public interface ShipService {
     List<Ship> getAllShips();
     List<Ship> getAllShipsByFilter(String name, String planet, ShipType shipType, Long after, Long before,
                            Boolean isUsed, Double minSpeed, Double maxSpeed, Integer minCrewSize, Integer maxCrewSize,
-                           Double minRating, Double maxRating);
+                           Double minRating, Double maxRating, ShipOrder order, Integer pageNumber, Integer pageSiz);
     List<Ship> getShipListByOrderByPage(List<Ship> ships, ShipOrder order, Integer pageNumber, Integer pageSize);
     Ship createNewShip(Ship ship);
     Ship createNewShip(String name, String planet, ShipType shipType, Long prodDate,
