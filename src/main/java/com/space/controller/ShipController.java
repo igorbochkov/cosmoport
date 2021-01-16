@@ -72,6 +72,12 @@ public class ShipController {
         return shipService.createNewShip(ship);
     }
 
+    @PostMapping("/{id}")
+    public Ship updateShip(@RequestBody Ship ship,
+                           @PathVariable Long id) {
+        return shipService.updateShip(id, ship);
+    }
+
     @GetMapping("/{id}")
     public Ship getShipById(@PathVariable(name = "id") String id) {
         return shipService.getShipById(id);

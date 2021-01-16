@@ -128,9 +128,9 @@ public class ShipServiceImpl implements ShipService {
 
         if (!checkValidParams(ship)) throw new BadRequestException();
 
-        if(ship.isUsed()==null) ship.setUsed(false);
+        if (ship.isUsed() == null) ship.setUsed(false);
 
-        Double speed =  Math.round(ship.getSpeed() * 100) * 1.0 /100;
+        Double speed = Math.round(ship.getSpeed() * 100) * 1.0 / 100;
 
         ship.setRating(getRating(speed, ship.isUsed(), ship.getProdDate()));
 
@@ -145,7 +145,57 @@ public class ShipServiceImpl implements ShipService {
 
     @Override
     public Ship updateShip(Long id, Ship ship) {
-        return null;
+
+        if (!isValidId(id.toString())) throw new BadRequestException();
+        if (!shipRepository.existsById(id)) throw new NotFoundException();
+
+        Ship oldShip = getShipById(id.toString());
+
+        String name = ship.getName();
+        if (name != null) {
+            if (name.length() > 50 || name.isEmpty()) throw new BadRequestException();
+            oldShip.setName(name);
+        }
+
+        if (ship.getPlanet() != null) {
+            if (ship.getPlanet().length() > 50 || ship.getPlanet().isEmpty()) throw new BadRequestException();
+            oldShip.setPlanet(ship.getPlanet());
+        }
+
+        if (ship.getShipType() != null) {
+            oldShip.setShipType(ship.getShipType());
+        }
+
+        if (ship.isUsed() != null) {
+            oldShip.setUsed(ship.isUsed());
+        }
+
+        if (ship.getProdDate() != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(ship.getProdDate());
+            int prodDate = cal.get(Calendar.YEAR);
+            if (prodDate < 2800 || prodDate > 3019) throw new BadRequestException();
+            oldShip.setProdDate(ship.getProdDate());
+        }
+
+        Double speed = ship.getSpeed();
+        if (speed != null) {
+            if (speed < 0.01d || speed > 0.99d) throw new BadRequestException();
+            oldShip.setSpeed(speed);
+        }
+
+        Integer crewSize = ship.getCrewSize();
+
+        if (crewSize != null) {
+            if (crewSize < 1 || crewSize > 9999) throw new BadRequestException();
+
+            oldShip.setCrewSize(crewSize);
+        }
+
+        oldShip.setRating(getRating(oldShip.getSpeed(), oldShip.isUsed(), oldShip.getProdDate()));
+
+        return shipRepository.save(oldShip);
+
     }
 
     @Override
@@ -183,7 +233,7 @@ public class ShipServiceImpl implements ShipService {
                                 Integer minCrewSize, Integer maxCrewSize, Double minRaring, Double maxRating) {
 
         return getAllShipsByFilter(name, planet, shipType, after, before, isUsed, minSpeed, maxSpeed,
-                minCrewSize, maxCrewSize, minRaring,maxRating).size();
+                minCrewSize, maxCrewSize, minRaring, maxRating).size();
     }
 
     @Override
